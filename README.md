@@ -40,4 +40,4 @@ You can then turn on the pal_filter.py filters using any of the flags below
 
 EXAMPLE USAGE
 
-./pal_filter.py -i R1.fastq -j R2.fastq -p pal_finder_output.txt -primers -occurrences -rankmotifs -assembly
+    ./pal_filter.py -i R1.fastq -j R2.fastq -p pal_finder_output.txt -primers -occurrences -rankmotifs -assembly
