@@ -1,6 +1,6 @@
-~~~~~~~~~~
+
 pal_filter
-~~~~~~~~~~
+
 Program to pick optimum loci from the output of pal_finder_v0.02.04
 
 This program can be used to filter output from pal_finder and choose the
@@ -9,7 +9,7 @@ This program can be used to filter output from pal_finder and choose the
 For the paper referncing this workflow, see Griffiths et al.
 (unpublished as of 15/02/2016) (sarah.griffiths-5@postgrad.manchester.ac.uk)
 
-~~~~~~~~~~~~~~~~~~~~~~~~~
+
 INSTALLATION INSTRUCTIONS
 
 To run pal_filter.py you will need the following:
