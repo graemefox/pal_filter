@@ -41,3 +41,9 @@ You can then turn on the pal_filter.py filters using any of the flags below
 EXAMPLE USAGE
 
     ./pal_filter.py -i R1.fastq -j R2.fastq -p pal_finder_output.txt -primers -occurrences -rankmotifs -assembly
+
+TROUBLESHOOTING
+
+If when using the -assembly option you get an error message stating that "Assembly.fasta" does not exist, you do not
+have PANDAseq properly installed and in your $PATH.
+On Ubuntu, follow the installation instructions on https://github.com/neufeld/pandaseq to add the repository and install using aptitude.
