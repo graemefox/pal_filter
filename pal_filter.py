@@ -192,9 +192,11 @@ def strip_barcodes(file):
 print "\n~~~~~~~~~~"
 print "pal_filter"
 print "~~~~~~~~~~\n"
+time.sleep(1)
 print "\"Find the optimum loci in your pal_finder output and increase "\
                     "the rate of successful microsatellite marker development\""
 print "\nSee Griffiths et al. (currently unpublished) for more details......"
+time.sleep(2)
 
 if (perform_assembly == 0 and filter_primers == 0 and filter_occurrences == 0 \
                     and filter_rank_motifs == 0):
@@ -208,13 +210,14 @@ else:
     print "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     print "Checking supplied filtering parameters:"
     print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    time.sleep(2)
     if filter_primers == 1:
         print "-primers flag supplied."
         print "Filtering pal_finder output on the \"Primers found (1=y,0=n)\"" \
                     " column."
         print "Only rows where primers have successfully been designed will"\
                     " pass the filter.\n"
-
+        time.sleep(2)
     if filter_occurrences == 1:
         print "-occurrences flag supplied."
         print "Filtering pal_finder output on the \"Occurences of Forward" \
@@ -222,14 +225,14 @@ else:
                     " in Reads\" columns."
         print "Only rows where both primers occur only a single time in the"\
                     " reads pass the filter.\n"
-
+        time.sleep(2)
     if filter_rank_motifs == 1:
         print "-rankmotifs flag supplied."
         print "Filtering pal_finder output on the \"Motifs(bases)\" column to" \
                     " just those with perfect repeats."
         print "Only rows containing 'perfect' repeats will pass the filter."
         print "Also, ranking output by size of motif (largest first).\n"
-
+        time.sleep(2)
 # index the raw fastq files so that the sequences can be pulled out and
 # added to the filtered output file
 
@@ -345,7 +348,7 @@ if perform_assembly == 1:
     print "-assembly flag supplied: Performing PandaSeq assembly quality checks."
     print "See Fox et al. (currently unpublished) for full details on the"\
                         " quality-check process.\n"
-    time.sleep(10)
+    time.sleep(5)
 
 # Get readID, F primers, R primers and motifs from filtered pal_finder output
     seqIDs = []
@@ -401,8 +404,8 @@ if perform_assembly == 1:
                         using the -c flag, provided that the fasta files \
                         are intact and in the same location."
     else:
-        print "\n(Skipping the fastq -> fasta conversion as you provided the \
-                        -c flag)"
+        print "\n(Skipping the fastq -> fasta conversion as you provided the" \
+                        " -c flag).\n"
 
 # get the files and everything else we will need
 
@@ -437,7 +440,7 @@ if perform_assembly == 1:
     R2fasta_sequences_index = SeqIO.index(R2_fasta,'fasta')
 
 # prepare the output file
-    with open (outputfilename + "_pal_finder_assembly_output.txt", 'w') \
+    with open (outputfilename + "_pal_filter_assembly_output.txt", 'w') \
                     as outputfile:
 # write the headers for the output file
         outputfile.write("readPairID\t Forward Primer\t F Primer Position in \
@@ -481,11 +484,17 @@ if perform_assembly == 1:
                                         + "\t" + a + "\t" + assembly_output \
                                         + R1_output + "\t" + R2_output + "\n")
                     outputfile.write(output)
-    print "\nFinished\n"
+        print "\nPANDAseq quality check complete."
+        print "Results from PANDAseq quality check (and filtering, if any" \
+                                " any filters enabled) written to output file" \
+                                " ending \"_pal_filter_assembly_output.txt\".\n\n"
 
+    print "Filtering of pal_finder results complete."
+    print "Filtered results written to output file ending \".filtered\"."
+    print "\nFinished\n"
 else:
     if (skip_assembly == 1 or skip_conversion == 1):
         print "\nERROR: You cannot supply the -a flag or the -c flag without \
                     also supplying the -assembly flag.\n"
 
-        print "\nFinished\n"
+        print "\nProgram Finished\n"
