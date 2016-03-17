@@ -235,7 +235,7 @@ with open (args.pal_finder) as csvfile_infile:
     header.extend(("R1_Sequence_ID", \
                    "R1_Sequence", \
                    "R2_Sequence_ID", \
-                   "R2_Sequence_ID" + "\n"))
+                   "R2_Sequence" + "\n"))
     with open( \
             os.path.splitext(os.path.basename(args.pal_finder))[0] + \
             ".filtered", 'w') as csvfile_outfile:
