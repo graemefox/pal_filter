@@ -6,7 +6,7 @@ Program to pick optimum loci from the output of pal_finder_v0.02.04
 This program can be used to filter output from pal_finder and choose the
 'optimum' loci.
 
-For the paper referencing this workflow, see Griffiths et al. 2016) (griffiths.sarahm@gmail.com)
+For the paper referencing this workflow, see [Griffiths et al. 2016](https://link.springer.com/article/10.1007/s12686-016-0570-7) (griffiths.sarahm@gmail.com)
 
 
 INSTALLATION INSTRUCTIONS
