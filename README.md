@@ -22,7 +22,7 @@ Biopython (http://biopython.org/wiki/Download)
 
 PANDAseq (https://github.com/neufeld/pandaseq)
 
-Clone the pal_filter repo using from your terminal:
+Clone the pal_filter repo using your terminal:
 
     git clone https://github.com/graemefox/pal_filter
 
