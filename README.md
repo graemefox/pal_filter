@@ -6,8 +6,7 @@ Program to pick optimum loci from the output of pal_finder_v0.02.04
 This program can be used to filter output from pal_finder and choose the
 'optimum' loci.
 
-For the paper referencing this workflow, see Griffiths et al.
-(unpublished as of 15/02/2016) (sarah.griffiths-5@postgrad.manchester.ac.uk)
+For the paper referencing this workflow, see Griffiths et al. 2016) (griffiths.sarahm@gmail.com)
 
 
 INSTALLATION INSTRUCTIONS
@@ -47,3 +46,7 @@ TROUBLESHOOTING
 If when using the -assembly option you get an error message stating that "Assembly.fasta" does not exist, you do not
 have PANDAseq properly installed and in your $PATH.
 On Ubuntu, follow the installation instructions on https://github.com/neufeld/pandaseq to add the repository and install using aptitude.
+
+REFERENCES
+Girffiths, S.M., Fox, G., Briggs, P.J., Donaldson, I.J., Hood, S., Richardson, P., Leaver, G.W., Truelove, N.K., Preziosi, R.F. (2016) A Galaxy-based bioinformatics pipeline for optimised, streamlined microsatellite development from Illumina next-generation sequencing data. Conservation Genetics Resources. Vol. 8. Issue 4. pp. 481 - 486.
+
