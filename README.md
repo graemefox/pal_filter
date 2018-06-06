@@ -48,5 +48,6 @@ have PANDAseq properly installed and in your $PATH.
 On Ubuntu, follow the installation instructions on https://github.com/neufeld/pandaseq to add the repository and install using aptitude.
 
 REFERENCES
+
 Girffiths, S.M., Fox, G., Briggs, P.J., Donaldson, I.J., Hood, S., Richardson, P., Leaver, G.W., Truelove, N.K., Preziosi, R.F. (2016) A Galaxy-based bioinformatics pipeline for optimised, streamlined microsatellite development from Illumina next-generation sequencing data. Conservation Genetics Resources. Vol. 8. Issue 4. pp. 481 - 486.
 
