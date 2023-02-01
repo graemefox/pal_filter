@@ -2,87 +2,62 @@
 """
 pal_filter
 https://github.com/graemefox/pal_filter
-
-Graeme Fox - 03/03/2016 - graeme.fox@manchester.ac.uk
-Tested on 64-bit Ubuntu, with Python 2.7
-
+Graeme Fox - 01/02/2023 - graeme.fox@nottingham.ac.uk
+Tested on 64-bit Ubuntu, with Python 3.9.12
 ~~~~~~~~~~~~~~~~~~~
 PROGRAM DESCRIPTION
-
 Program to pick optimum loci from the output of pal_finder_v0.02.04
-
 This program can be used to filter output from pal_finder and choose the
 'optimum' loci.
-
 For the paper referncing this workflow, see Griffiths et al.
-(unpublished as of 15/02/2016) (sarah.griffiths-5@postgrad.manchester.ac.uk)
-
+https://doi.org/10.1007/s12686-016-0570-7   sarah.griffiths@mmu.ac.uk
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This program also contains a quality-check method to improve the rate of PCR
 success. For this QC method, paired end reads are assembled using
 PANDAseq so you must have PANDAseq installed.
-
 For the paper referencing this assembly-QC method see Fox et al.
 (unpublished as of 15/02/2016) (graeme.fox@manchester.ac.uk)
-
 For best results in PCR for marker development, I suggest enabling all the
 filter options AND the assembly based QC
-
 ~~~~~~~~~~~~
 REQUIREMENTS
-
 Must have Biopython installed (www.biopython.org).
-
 If you with to perform the assembly QC step, you must have:
 PandaSeq (https://github.com/neufeld/pandaseq)
 PandaSeq must be in your $PATH / able to run from anywhere
-
 ~~~~~~~~~~~~~~~~
 REQUIRED OPTIONS
-
 -i forward_paired_ends.fastQ
 -j reverse_paired_ends.fastQ
 -p pal_finder output - by default pal_finder names this "x_PAL_summary.txt"
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 BY DEFAULT THIS PROGRAM DOES NOTHING. ENABLE SOME OF THE OPTIONS BELOW.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 NON-REQUIRED OPTIONS
-
 -assembly:  turn on the pandaseq assembly QC step
-
 -primers:  filter microsatellite loci to just those which have primers designed
-
 -occurrences:  filter microsatellite loci to those with primers
  which appear only once in the dataset
-
 -rankmotifs:  filter microsatellite loci to just those with perfect motifs.
  Rank the output by size of motif (largest first)
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For repeat analysis, the following extra non-required options may be useful:
-
 Since PandaSeq Assembly, and fastq -> fasta conversion are slow, do them the
 first time, generate the files and then skip either, or both steps with
 the following:
-
 -a:  skip assembly step
 -c:  skip fastq -> fasta conversion step
-
 Just make sure to keep the assembled/converted files in the correct directory
 with the correct filename(s)
-
 ~~~~~~~~~~~~~~~
 EXAMPLE USAGE:
-
 pal_filtery.py -i R1.fastq -j R2.fastq
  -p pal_finder_output.tabular -primers -occurrences -rankmotifs -assembly
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 """
 import Bio, subprocess, argparse, csv, os, re, time
 from Bio import SeqIO
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 ############################################################
 # Function List                                            #
 ############################################################
@@ -130,10 +105,10 @@ print("\n~~~~~~~~~~")
 print("pal_filter")
 print("~~~~~~~~~~")
 print("Version: " + __version__)
-time.sleep(1)
+
 print("\nFind the optimum loci in your pal_finder output and increase "\
                     "the rate of successful microsatellite marker development")
-time.sleep(2)
+
 
 # Get values for all the required and optional arguments
 
@@ -186,7 +161,7 @@ else:
     print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print("Checking supplied filtering parameters:")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    time.sleep(2)
+    
     if args.get_version:
         prin("pal_filter version is " + __version__ + " (03/03/2016)")
     if args.primers:
@@ -195,7 +170,7 @@ else:
                     " column.")
         print("Only rows where primers have successfully been designed will"\
                     " pass the filter.\n")
-        time.sleep(2)
+        
     if args.occurrences:
         print("-occurrences flag supplied.")
         print("Filtering pal_finder output on the \"Occurrences of Forward" \
@@ -203,20 +178,21 @@ else:
                     " in Reads\" columns.")
         print("Only rows where both primers occur only a single time in the"\
                     " reads pass the filter.\n")
-        time.sleep(2)
+        
     if args.rankmotifs:
         print("-rankmotifs flag supplied.")
         print("Filtering pal_finder output on the \"Motifs(bases)\" column to" \
                     " just those with perfect repeats.")
         print("Only rows containing 'perfect' repeats will pass the filter.")
         print("Also, ranking output by size of motif (largest first).\n")
-        time.sleep(2)
+        
 
 # index the raw fastq files so that the sequences can be pulled out and
 # added to the filtered output file
 print("Indexing FastQ files.....")
 R1fastq_sequences_index = SeqIO.index(args.input1,'fastq')
 R2fastq_sequences_index = SeqIO.index(args.input2,'fastq')
+print(R1fastq_sequences_index.keys())
 
 # create a set to hold the filtered output
 wanted_lines = set()
@@ -225,7 +201,8 @@ wanted_lines = set()
 # read the pal_finder output file into a csv reader
 with open (args.pal_finder) as csvfile_infile:
     csv_f = csv.reader(csvfile_infile, delimiter='\t')
-    header = csv_f.next()
+    #header = csv_f.next()
+    header = next(csv_f)
     header.extend(("R1_Sequence_ID", \
                    "R1_Sequence", \
                    "R2_Sequence_ID", \
@@ -236,8 +213,10 @@ with open (args.pal_finder) as csvfile_infile:
         # write the header line for the output file
         csvfile_outfile.write('\t'.join(header))
         for row in csv_f:
+            print(row)
             # get the sequence ID
             seq_ID = row[0]
+            print(seq_ID)
             # get the raw sequence reads and convert to a format that can
             # go into a tsv file
             R1_sequence = R1fastq_sequences_index[seq_ID].format("fasta").\
@@ -291,7 +270,7 @@ if args.rankmotifs:
             os.path.splitext(os.path.basename(args.pal_finder))[0] + \
             ".filtered") as csvfile_ranksize:
         csv_rank = csv.reader(csvfile_ranksize, delimiter='\t')
-        header = csv_rank.next()
+        header = next(csv_rank)
         for line in csv_rank:
             rank_motif.append(line)
 
@@ -334,7 +313,7 @@ if args.assembly:
             os.path.splitext(os.path.basename(args.pal_finder))[0] + \
             ".filtered") as input_csv:
         pal_finder_csv = csv.reader(input_csv, delimiter='\t')
-        header = pal_finder_csv.next()
+        header = next(pal_finder_csv)
         for row in pal_finder_csv:
             seqIDs.append(row[0])
             motif.append(row[1])
@@ -350,7 +329,6 @@ if args.assembly:
     (can be skipped with the -a flag if assembly has already been run
     and the appropriate files are in the same directory as the script,
     and named "Assembly.fasta" and "Assembly_adapters_removed.fasta")
-
     The first time you riun the script you MUST not enable the -a flag.t
     but you are able to skip the assembly in subsequent analysis using the
     -a flag.
