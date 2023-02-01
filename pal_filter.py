@@ -163,7 +163,7 @@ else:
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     
     if args.get_version:
-        prin("pal_filter version is " + __version__ + " (03/03/2016)")
+        print("pal_filter version is " + __version__ + " (02/02/2023)")
     if args.primers:
         print("-primers flag supplied.")
         print("Filtering pal_finder output on the \"Primers found (1=y,0=n)\"" \
@@ -192,7 +192,6 @@ else:
 print("Indexing FastQ files.....")
 R1fastq_sequences_index = SeqIO.index(args.input1,'fastq')
 R2fastq_sequences_index = SeqIO.index(args.input2,'fastq')
-print(R1fastq_sequences_index.keys())
 
 # create a set to hold the filtered output
 wanted_lines = set()
@@ -213,10 +212,8 @@ with open (args.pal_finder) as csvfile_infile:
         # write the header line for the output file
         csvfile_outfile.write('\t'.join(header))
         for row in csv_f:
-            print(row)
             # get the sequence ID
             seq_ID = row[0]
-            print(seq_ID)
             # get the raw sequence reads and convert to a format that can
             # go into a tsv file
             R1_sequence = R1fastq_sequences_index[seq_ID].format("fasta").\
@@ -334,8 +331,8 @@ if args.assembly:
     -a flag.
     """
     if not args.skip_assembly:
-        pandaseq_command = 'pandaseq -A pear -f ' + args.input1 + ' -r ' + \
-                        args.input2 + ' -o 25 -t 0.95 -w Assembly.fasta'
+        pandaseq_command = 'pandaseq -f ' + args.input1 + ' -r ' + \
+                        args.input2 + ' -w Assembly.fasta &> /dev/null'
         subprocess.call(pandaseq_command, shell=True)
         strip_barcodes("Assembly.fasta", wanted)
         print("\nPaired end reads been assembled into overlapping reads.")
