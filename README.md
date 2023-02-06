@@ -16,8 +16,6 @@ INSTALLATION INSTRUCTIONS
 
 To run pal_filter.py you will need the following:
 
-Python 2.7 (https://www.python.org/download/releases/2.7/)
-
 Biopython (http://biopython.org/wiki/Download)
 
 PANDAseq (https://github.com/neufeld/pandaseq)
